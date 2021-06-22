@@ -1,0 +1,44 @@
+version: '3.7'
+
+services:
+  service_db_production:
+    image: mysql:5.7
+    restart: always
+    env_file:
+      - env_files/mysql_production.env
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "-u${MYSQL_USER}", "-p${MYSQL_PASSWORD}",  "ping", "-h", "localhost" ]
+      interval: 3s
+      timeout: 5s
+      retries: 10
+    volumes:
+      - service_db_production:/var/lib/mysql
+  app:
+    build:
+      context: .
+    volumes:
+      - static_data:/vol/web
+    env_file:
+      - env_files/mysql_production.env
+      - env_files/app_settings_production.env
+    depends_on:
+      service_db_production:
+        condition: service_healthy
+
+  proxy:
+    build:
+      context: ./proxy
+    volumes:
+      - static_data:/vol/static
+    ports:
+      - "80:80"
+    depends_on:
+      - app
+
+volumes:
+  service_db_production:
+  static_data:
