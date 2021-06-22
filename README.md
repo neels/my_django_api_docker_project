@@ -1,4 +1,4 @@
-# django_rest_api
+# my_django_api_docker_project
 
 ### Stack used:
 - Python 3.9
