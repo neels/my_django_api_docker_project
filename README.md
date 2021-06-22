@@ -44,7 +44,7 @@ http://localhost/marketCap?coin_id=ripple&currency=GBP&date=2021/03/12
 ### Pytest
 To run tests just put this command in your terminal
 ```
-docker exec -it django_rest_api_app_1 pytest -v
+docker exec -it my_django_api_docker_project_app_1 pytest -v
 ```
 * * *
 ### Scale
